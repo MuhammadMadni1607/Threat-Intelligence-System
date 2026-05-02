@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Threat Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #111;
+            color: white;
+            text-align: center;
+        }
+
+        input {
+            margin: 5px;
+            padding: 8px;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: green;
+            color: white;
+            border: none;
+        }
+
+        table {
+            margin: auto;
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        th, td {
+            border: 1px solid white;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Threat Intelligence Dashboard</h1>
+
+<h3>Add IOC</h3>
+
+<input id="ip" placeholder="IP">
+<input id="domain" placeholder="Domain">
+<input id="severity" placeholder="Severity">
+<input id="source" placeholder="Source">
+
+<br><br>
+
+<button onclick="saveIOC()">Save</button>
+
+<h3>All IOC Data</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>IP</th>
+            <th>Domain</th>
+            <th>Severity</th>
+            <th>Source</th>
+        </tr>
+    </thead>
+    <tbody id="tableData"></tbody>
+</table>
+
+<script>
+async function saveIOC() {
+    const data = {
+        ip: document.getElementById("ip").value,
+        domain: document.getElementById("domain").value,
+        severity: document.getElementById("severity").value,
+        source: document.getElementById("source").value
+    };
+
+    await fetch("/ioc", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    });
+
+    loadData();
+}
+
+async function loadData() {
+    const res = await fetch("/ioc");
+    const data = await res.json();
+
+    let rows = "";
+    data.forEach(item => {
+        rows += `
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.ip}</td>
+                <td>${item.domain}</td>
+                <td>${item.severity}</td>
+                <td>${item.source}</td>
+            </tr>
+        `;
+    });
+
+    document.getElementById("tableData").innerHTML = rows;
+}
+
+loadData();
+</script>
+
+</body>
+</html>
