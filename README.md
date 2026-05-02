@@ -155,5 +155,5 @@ Role-based access control
 
 👨‍💻 Author
 
-Muhammad Madni, Daud Latif, Zohiab Luqman, Wasif Ali Raza,Hannea 
+Muhammad Madni, Daud Latif, Zohiab Luqman, Wasif Ali Raza,Haneea Awan
 Software Engineering Students
