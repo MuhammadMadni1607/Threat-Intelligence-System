@@ -1,72 +1,152 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Threat Dashboard</title>
+    <title>Threat Intelligence Dashboard</title>
+
     <style>
         body {
-            font-family: Arial;
-            background: #111;
-            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h1 {
             text-align: center;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: #0f172a;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .inputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
         }
 
         input {
-            margin: 5px;
-            padding: 8px;
+            padding: 10px;
             width: 200px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #020617;
+            color: white;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 5px #38bdf8;
         }
 
         button {
             padding: 10px 20px;
-            cursor: pointer;
-            background: green;
-            color: white;
+            border-radius: 8px;
             border: none;
+            background: #38bdf8;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+            transform: scale(1.05);
         }
 
         table {
-            margin: auto;
-            margin-top: 20px;
+            width: 100%;
             border-collapse: collapse;
-            width: 80%;
+            margin-top: 10px;
         }
 
-        th, td {
-            border: 1px solid white;
-            padding: 10px;
+        th {
+            background: #1e293b;
+            color: #38bdf8;
+            padding: 12px;
         }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #334155;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .severity-high {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .severity-medium {
+            color: #facc15;
+        }
+
+        .severity-low {
+            color: #22c55e;
+        }
+
     </style>
 </head>
 
 <body>
 
-<h1>Threat Intelligence Dashboard</h1>
+<div class="container">
 
-<h3>Add IOC</h3>
+    <h1>🚨 Threat Intelligence Dashboard</h1>
 
-<input id="ip" placeholder="IP">
-<input id="domain" placeholder="Domain">
-<input id="severity" placeholder="Severity">
-<input id="source" placeholder="Source">
+    <div class="card">
+        <h3>Add IOC</h3>
 
-<br><br>
+        <div class="inputs">
+            <input id="ip" placeholder="IP Address">
+            <input id="domain" placeholder="Domain">
+            <input id="severity" placeholder="Severity (1-10)">
+            <input id="source" placeholder="Source">
+        </div>
 
-<button onclick="saveIOC()">Save</button>
+        <br>
+        <button onclick="saveIOC()">Save IOC</button>
+    </div>
 
-<h3>All IOC Data</h3>
+    <div class="card">
+        <h3>📊 All Threat Data</h3>
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>IP</th>
-            <th>Domain</th>
-            <th>Severity</th>
-            <th>Source</th>
-        </tr>
-    </thead>
-    <tbody id="tableData"></tbody>
-</table>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>IP</th>
+                    <th>Domain</th>
+                    <th>Severity</th>
+                    <th>Source</th>
+                </tr>
+            </thead>
+            <tbody id="tableData"></tbody>
+        </table>
+    </div>
+
+</div>
 
 <script>
 async function saveIOC() {
@@ -86,6 +166,12 @@ async function saveIOC() {
     loadData();
 }
 
+function getSeverityClass(severity) {
+    if (severity >= 7) return "severity-high";
+    if (severity >= 4) return "severity-medium";
+    return "severity-low";
+}
+
 async function loadData() {
     const res = await fetch("/ioc");
     const data = await res.json();
@@ -97,7 +183,7 @@ async function loadData() {
                 <td>${item.id}</td>
                 <td>${item.ip}</td>
                 <td>${item.domain}</td>
-                <td>${item.severity}</td>
+                <td class="${getSeverityClass(item.severity)}">${item.severity}</td>
                 <td>${item.source}</td>
             </tr>
         `;
