@@ -81,6 +81,9 @@ com.ccp.threat_system
 │   └── IOCData
 │
 └── ThreatSystemApplication
+
+
+
 ⚙️ Setup Instructions
 1. Clone the repository
 git clone https://github.com/your-username/threat-intelligence-system.git
@@ -109,6 +112,7 @@ Kafka → localhost:9092
 mvn spring-boot:run
 5. Open Dashboard
 http://localhost:8080/
+
 📡 API Endpoints
 ➤ Add IOC
 POST /ioc
@@ -121,6 +125,7 @@ Request Body:
   "severity": 5,
   "source": "manual"
 }
+
 ➤ Get All IOC Data
 GET /ioc
 🧪 Kafka Topic
@@ -130,6 +135,7 @@ Input IOC data (IP, domain, severity, source)
 Save data to backend
 Display all records in table format
 Auto-refresh data from API
+
 📌 Example Output
 {
   "id": 1,
@@ -138,6 +144,7 @@ Auto-refresh data from API
   "severity": 3,
   "source": "manual"
 }
+
 🔮 Future Improvements
 Real-time dashboard updates (WebSockets)
 Threat classification using AI/ML
@@ -145,8 +152,8 @@ JWT authentication
 Advanced analytics dashboard
 Alert system based on severity
 Role-based access control
+
 👨‍💻 Author
 
-Muhammad Madni
-Software Engineering Student
-Skills: Java, Spring Boot, C++, Video Editing, Web Development
+Muhammad Madni, Daud Latif, Zohiab Luqman, Wasif Ali Raza
+Software Engineering Students
